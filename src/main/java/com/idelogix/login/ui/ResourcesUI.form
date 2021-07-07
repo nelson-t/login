@@ -6,7 +6,7 @@
     <Property name="iconifiable" type="boolean" value="true"/>
     <Property name="maximizable" type="boolean" value="true"/>
     <Property name="resizable" type="boolean" value="true"/>
-    <Property name="title" type="java.lang.String" value="_Users_Maintenance"/>
+    <Property name="title" type="java.lang.String" value="_Resources_Maintenance"/>
     <Property name="toolTipText" type="java.lang.String" value=""/>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[0, 0]"/>
@@ -98,7 +98,7 @@
             <Component class="javax.swing.JTable" name="tblMain">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="userService.getTableModel(null)" type="code"/>
+                  <Connection code="resourceService.getTableModel(null)" type="code"/>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0"/>
@@ -224,8 +224,8 @@
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                  <JTabbedPaneConstraints tabName="_User_information">
-                    <Property name="tabTitle" type="java.lang.String" value="_User_information"/>
+                  <JTabbedPaneConstraints tabName="_Resource_information">
+                    <Property name="tabTitle" type="java.lang.String" value="_Resource_information"/>
                   </JTabbedPaneConstraints>
                 </Constraint>
               </Constraints>
@@ -238,40 +238,31 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                      <Component id="lUserId" max="32767" attributes="0"/>
+                                      <Component id="lId" max="32767" attributes="0"/>
                                       <Component id="lName" max="32767" attributes="0"/>
                                       <Component id="lComments" alignment="1" pref="97" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="1" attributes="0">
                                       <Component id="tName" max="32767" attributes="0"/>
-                                      <Component id="tUserid" max="32767" attributes="0"/>
+                                      <Component id="tId" max="32767" attributes="0"/>
                                       <Component id="tComments" max="32767" attributes="0"/>
                                   </Group>
-                                  <EmptySpace max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                          <Component id="lDateCreated" pref="96" max="32767" attributes="0"/>
-                                          <Component id="lPassword" max="32767" attributes="0"/>
-                                      </Group>
+                                      <Component id="lDateCreated" min="-2" pref="96" max="-2" attributes="0"/>
                                       <Component id="lEnabled" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="tPassword" alignment="0" max="32767" attributes="0"/>
-                                      <Group type="102" attributes="0">
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="tDateCreated" min="-2" pref="100" max="-2" attributes="0"/>
-                                              <Component id="cbEnabled" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace min="0" pref="109" max="32767" attributes="0"/>
-                                      </Group>
+                                      <Component id="tDateCreated" min="-2" pref="100" max="-2" attributes="0"/>
+                                      <Component id="cbEnabled" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="109" max="32767" attributes="0"/>
                               </Group>
                           </Group>
+                          <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -282,9 +273,9 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                                  <Component id="lUserId" max="32767" attributes="0"/>
+                                  <Component id="lId" max="32767" attributes="0"/>
                               </Group>
-                              <Component id="tUserid" min="-2" max="-2" attributes="0"/>
+                              <Component id="tId" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -306,12 +297,7 @@
                               <Component id="lEnabled" min="-2" max="-2" attributes="0"/>
                               <Component id="cbEnabled" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="tPassword" alignment="3" max="32767" attributes="0"/>
-                              <Component id="lPassword" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="114" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="143" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -329,24 +315,6 @@
                 <Component class="javax.swing.JCheckBox" name="cbEnabled">
                   <Properties>
                     <Property name="enabled" type="boolean" value="false"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JPasswordField" name="tPassword">
-                  <Properties>
-                    <Property name="enabled" type="boolean" value="false"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="tPasswordFocusGained"/>
-                    <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tPasswordKeyPressed"/>
-                  </Events>
-                </Component>
-                <Component class="javax.swing.JLabel" name="lPassword">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Tahoma" size="12" style="0"/>
-                    </Property>
-                    <Property name="horizontalAlignment" type="int" value="11"/>
-                    <Property name="text" type="java.lang.String" value="_Password"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lDateCreated">
@@ -418,7 +386,7 @@
                     <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tNameKeyPressed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JTextField" name="tUserid">
+                <Component class="javax.swing.JTextField" name="tId">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Tahoma" size="12" style="0"/>
@@ -429,7 +397,7 @@
                     <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="lUserId">
+                <Component class="javax.swing.JLabel" name="lId">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Tahoma" size="12" style="0"/>
@@ -450,8 +418,8 @@
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                  <JTabbedPaneConstraints tabName="_User_roles">
-                    <Property name="tabTitle" type="java.lang.String" value="_User_roles"/>
+                  <JTabbedPaneConstraints tabName="_Resource_actions">
+                    <Property name="tabTitle" type="java.lang.String" value="_Resource_actions"/>
                   </JTabbedPaneConstraints>
                 </Constraint>
               </Constraints>
@@ -568,7 +536,7 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Tahoma" size="12" style="0"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="_Available_roles"/>
+                    <Property name="text" type="java.lang.String" value="_Available_actions"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lUserRoles">
@@ -576,7 +544,7 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Tahoma" size="12" style="0"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="_User&apos;s_roles"/>
+                    <Property name="text" type="java.lang.String" value="_Resource&apos;s_actions"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JButton" name="bRightLeft">

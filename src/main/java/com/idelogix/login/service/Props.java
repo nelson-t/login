@@ -47,7 +47,7 @@ public class Props {
 
     public String getTxtProps(String name) {
         if (txtProps.getProperty(name) == null) {
-            return "***";
+            return name+"*";
         } else {
             return txtProps.getProperty(name);
         }

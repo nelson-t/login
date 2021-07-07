@@ -53,18 +53,7 @@ abstract class GenericEntityDAO implements IGenericEntityDAO<GenericEntity> {
         } catch (SQLException e) {
             Utils.log.error("Error on GenericDAO", e);
         } finally {
-            try {
-                if (ptmt != null) {
-                    ptmt.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                Utils.log.error("Error on GenericDAO", e);
-            } catch (Exception e) {
-                Utils.log.error(e);
-            }
+             Utils.tryCloseDB(connection, ptmt, null);
         }
         return success;
     }
@@ -87,18 +76,7 @@ abstract class GenericEntityDAO implements IGenericEntityDAO<GenericEntity> {
         } catch (SQLException e) {
             Utils.log.error("Error on GenericDAO", e);
         } finally {
-            try {
-                if (ptmt != null) {
-                    ptmt.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                Utils.log.error("Error on GenericDAO", e);
-            } catch (Exception e) {
-                Utils.log.error(e);
-            }
+           Utils.tryCloseDB(connection, ptmt, null);
         }
         return success;
     }
@@ -116,18 +94,7 @@ abstract class GenericEntityDAO implements IGenericEntityDAO<GenericEntity> {
         } catch (SQLException e) {
             Utils.log.error(e);
         } finally {
-            try {
-                if (ptmt != null) {
-                    ptmt.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                Utils.log.error("Error on GenericDAO", e);
-            } catch (Exception e) {
-                Utils.log.error(e);
-            }
+           Utils.tryCloseDB(connection, ptmt, null);
         }
         return (delCount > 0);
     }
@@ -149,21 +116,7 @@ abstract class GenericEntityDAO implements IGenericEntityDAO<GenericEntity> {
         } catch (SQLException e) {
             Utils.log.error("Error on GenericDAO", e);
         } finally {
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                if (ptmt != null) {
-                    ptmt.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                Utils.log.error("Error on GenericDAO", e);
-            } catch (Exception e) {
-                Utils.log.error(e);
-            }
+           Utils.tryCloseDB(connection, ptmt, resultSet);
         }
         return ge;
     }
@@ -185,21 +138,7 @@ abstract class GenericEntityDAO implements IGenericEntityDAO<GenericEntity> {
         } catch (SQLException e) {
             Utils.log.error("Error on GenericDAO", e);
         } finally {
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                if (ptmt != null) {
-                    ptmt.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                Utils.log.error("Error on GenericDAO", e);
-            } catch (Exception e) {
-                Utils.log.error(e);
-            }
+           Utils.tryCloseDB(connection, ptmt, resultSet);
         }
         return ge;
     }
@@ -224,17 +163,19 @@ abstract class GenericEntityDAO implements IGenericEntityDAO<GenericEntity> {
         ResultSetMetaData rsmd;
 
         try {
-            if (searchString != null) {
-                queryGetAll2 = queryGetAll + "WHERE INSTR(CONCAT(comments,name), ?)";
+            if (! (searchString == null || searchString.equals("")) ) {
+                queryGetAll2 = queryGetAll + " WHERE INSTR(CONCAT(comments,name), ?)";
             }
             if (limit != 0) {
-                queryGetAll2 = queryGetAll + "LIMIT ? OFFSET ?";
+                queryGetAll2 = queryGetAll + " LIMIT ? OFFSET ?";
             }
-
+            
+            queryGetAll2 = queryGetAll2 + " ORDER BY name";
+            
             connection = getConnection();
             ptmt = connection.prepareStatement(queryGetAll2);
 
-            if (searchString != null) {
+            if (! (searchString == null || searchString.equals("")) ) {
                 ptmt.setString(1, searchString);
                 if (limit != 0) {
                     ptmt.setInt(2, limit);
@@ -246,6 +187,7 @@ abstract class GenericEntityDAO implements IGenericEntityDAO<GenericEntity> {
                     ptmt.setInt(2, offset);
                 }
             }
+            Utils.print(ptmt.toString());
             resultSet = ptmt.executeQuery();
 
             rsmd = resultSet.getMetaData();
@@ -258,27 +200,11 @@ abstract class GenericEntityDAO implements IGenericEntityDAO<GenericEntity> {
         } catch (SQLException e) {
             Utils.log.error("Error on GenericDAO", e);
         } finally {
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                if (ptmt != null) {
-                    ptmt.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                Utils.log.error("Error on GenericDAO", e);
-            } catch (Exception e) {
-                Utils.log.error(e);
-            }
+           Utils.tryCloseDB(connection, ptmt, resultSet);
         }
         return gel;
     }
 
-    public abstract GenericEntity getEntityFromRS(ResultSet resultSet);
-    
     public int getStringFieldMaxSize(String entityName, String fieldName){
         Connection connection = null;
         PreparedStatement ptmt = null;
@@ -290,7 +216,6 @@ abstract class GenericEntityDAO implements IGenericEntityDAO<GenericEntity> {
             ptmt = connection.prepareStatement(theQuery);
             ptmt.setString(1, fieldName);
             ptmt.setString(2, entityName);
-            System.out.println(ptmt.toString());
             resultSet = ptmt.executeQuery();
             if (resultSet.next()) {
                 theSize=resultSet.getInt(1);
@@ -298,23 +223,11 @@ abstract class GenericEntityDAO implements IGenericEntityDAO<GenericEntity> {
         } catch (SQLException e) {
             Utils.log.error("Error on GenericDAO", e);
         } finally {
-            try {
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-                if (ptmt != null) {
-                    ptmt.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch (SQLException e) {
-                Utils.log.error("Error on GenericDAO", e);
-            } catch (Exception e) {
-                Utils.log.error(e);
-            }
+           Utils.tryCloseDB(connection, ptmt, resultSet);
         }
       return theSize;
     }
+
+    public abstract GenericEntity getEntityFromRS(ResultSet resultSet);
 
 }

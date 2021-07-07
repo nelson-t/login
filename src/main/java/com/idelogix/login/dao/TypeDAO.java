@@ -15,12 +15,12 @@ public class TypeDAO extends GenericEntityDAO {
     //Singleton
     private static final TypeDAO typeJdbcDAOInstance = new TypeDAO();
 
-    String queryAdd = "INSERT INTO type(name,comments,enabled) VALUES(?,?,?)";
-    String queryUpdate = "UPDATE type SET name=?, comments=?, enabled=? WHERE id=?";
-    String queryDelete = "DELETE FROM type WHERE id = ?";
+    String queryAdd     = "INSERT INTO type(name,comments,enabled) VALUES(?,?,?)";
+    String queryUpdate  = "UPDATE type SET name=?, comments=?, enabled=? WHERE id=?";
+    String queryDelete  = "DELETE FROM type WHERE id = ?";
     String queryGetById = "SELECT * FROM type where id = ?";
     String queryGetByName = "SELECT * FROM type where name = ?";
-    String queryGetAll = "SELECT * FROM type ";
+    String queryGetAll  = "SELECT * FROM type";
 
     public static TypeDAO getInstance() {
         return typeJdbcDAOInstance;

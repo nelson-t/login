@@ -20,7 +20,7 @@ public class ActionDAO extends GenericEntityDAO {
     String queryDelete = "DELETE FROM action WHERE id = ?";
     String queryGetById = "SELECT * FROM action where id = ?";
     String queryGetByName = "SELECT * FROM action where name = ?";
-    String queryGetAll = "SELECT * FROM action ";
+    String queryGetAll = "SELECT * FROM action";
 
     public static ActionDAO getInstance() {
         return actionJdbcDAOInstance;

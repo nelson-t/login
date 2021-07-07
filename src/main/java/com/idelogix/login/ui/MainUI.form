@@ -50,20 +50,34 @@
             <MenuItem class="javax.swing.JMenuItem" name="mRoles">
               <Properties>
                 <Property name="text" type="java.lang.String" value="_Roles"/>
-                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mRolesActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mActions">
               <Properties>
                 <Property name="text" type="java.lang.String" value="_Actions"/>
-                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mActionsActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mResources">
               <Properties>
                 <Property name="text" type="java.lang.String" value="_Resources"/>
-                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mResourcesActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="mTypes">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="_Types"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mTypesActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>

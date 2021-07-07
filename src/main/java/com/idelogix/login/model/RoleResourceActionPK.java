@@ -5,13 +5,11 @@
  */
 package com.idelogix.login.model;
 
-import java.io.Serializable;
-
 /**
  *
  * @author Administrator
  */
-public class RoleResourceActionPK implements Serializable {
+public class RoleResourceActionPK {
 
     private int roleId;
     private int resourceId;
@@ -48,15 +46,6 @@ public class RoleResourceActionPK implements Serializable {
 
     public void setActionId(int actionId) {
         this.actionId = actionId;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (int) roleId;
-        hash += (int) resourceId;
-        hash += (int) actionId;
-        return hash;
     }
 
     @Override

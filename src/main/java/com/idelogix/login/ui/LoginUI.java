@@ -32,6 +32,7 @@ public class LoginUI extends javax.swing.JFrame {
     }
 
     private void myInitComponents() {
+        //Allow OK button with enter
         clearValues();
         UIUtils.getLocalText(this);
     }
@@ -71,12 +72,20 @@ public class LoginUI extends javax.swing.JFrame {
         lEnterInfo.setText("_Enter_requested_information");
 
         lUserName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        lUserName.setText("_User_name");
+        lUserName.setText("_Name");
 
         lPassword.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lPassword.setText("_Password");
 
         bOK.setText("_OK");
+        bOK.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                bOKFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                bOKFocusLost(evt);
+            }
+        });
         bOK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bOKActionPerformed(evt);
@@ -84,6 +93,14 @@ public class LoginUI extends javax.swing.JFrame {
         });
 
         bCancel.setText("_Cancel");
+        bCancel.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                bCancelFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                bCancelFocusLost(evt);
+            }
+        });
         bCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bCancelActionPerformed(evt);
@@ -93,11 +110,6 @@ public class LoginUI extends javax.swing.JFrame {
         tUserName.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 tUserNameFocusLost(evt);
-            }
-        });
-        tUserName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tUserNameActionPerformed(evt);
             }
         });
 
@@ -121,7 +133,7 @@ public class LoginUI extends javax.swing.JFrame {
                 .addGroup(pInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lEnterInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pInfoLayout.createSequentialGroup()
-                        .addGap(0, 42, Short.MAX_VALUE)
+                        .addGap(0, 45, Short.MAX_VALUE)
                         .addGroup(pInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pInfoLayout.createSequentialGroup()
                                 .addGroup(pInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -221,13 +233,25 @@ public class LoginUI extends javax.swing.JFrame {
   
     }//GEN-LAST:event_tPasswordFocusGained
 
-    private void tUserNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tUserNameActionPerformed
-
-    }//GEN-LAST:event_tUserNameActionPerformed
-
     private void tUserNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tUserNameFocusLost
         fillRolesComboBox();
     }//GEN-LAST:event_tUserNameFocusLost
+
+    private void bOKFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bOKFocusGained
+        this.getRootPane().setDefaultButton(bOK); // Allow Enter
+    }//GEN-LAST:event_bOKFocusGained
+
+    private void bCancelFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bCancelFocusGained
+        this.getRootPane().setDefaultButton(bCancel);
+    }//GEN-LAST:event_bCancelFocusGained
+
+    private void bOKFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bOKFocusLost
+        this.getRootPane().setDefaultButton(null);
+    }//GEN-LAST:event_bOKFocusLost
+
+    private void bCancelFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bCancelFocusLost
+        this.getRootPane().setDefaultButton(null);
+    }//GEN-LAST:event_bCancelFocusLost
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bCancel;

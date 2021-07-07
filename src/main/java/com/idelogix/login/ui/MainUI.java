@@ -44,6 +44,7 @@ public class MainUI extends javax.swing.JFrame {
         mRoles = new javax.swing.JMenuItem();
         mActions = new javax.swing.JMenuItem();
         mResources = new javax.swing.JMenuItem();
+        mTypes = new javax.swing.JMenuItem();
         mHelp = new javax.swing.JMenu();
         mInfo = new javax.swing.JMenuItem();
 
@@ -106,16 +107,36 @@ public class MainUI extends javax.swing.JFrame {
         mAdmin.add(mUsers);
 
         mRoles.setText("_Roles");
-        mRoles.setEnabled(false);
+        mRoles.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mRolesActionPerformed(evt);
+            }
+        });
         mAdmin.add(mRoles);
 
         mActions.setText("_Actions");
-        mActions.setEnabled(false);
+        mActions.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mActionsActionPerformed(evt);
+            }
+        });
         mAdmin.add(mActions);
 
         mResources.setText("_Resources");
-        mResources.setEnabled(false);
+        mResources.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mResourcesActionPerformed(evt);
+            }
+        });
         mAdmin.add(mResources);
+
+        mTypes.setText("_Types");
+        mTypes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mTypesActionPerformed(evt);
+            }
+        });
+        mAdmin.add(mTypes);
 
         jMenuBar1.add(mAdmin);
 
@@ -155,15 +176,58 @@ public class MainUI extends javax.swing.JFrame {
 
     private void mUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mUsersActionPerformed
         final JInternalFrame[] frames = mainPanel.getAllFrames();
-        System.out.println(Arrays.asList(frames));
         UsersUI uView = new UsersUI();
-        System.out.println(uView);
         //Just one window
         if (!Arrays.asList(frames).toString().contains("UsersUI")) {
             mainPanel.add(uView);
             mainPanel.validate();
+            uView.moveToFront();
         }
     }//GEN-LAST:event_mUsersActionPerformed
+
+    private void mRolesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mRolesActionPerformed
+        final JInternalFrame[] frames = mainPanel.getAllFrames();
+        RolesUI rView = new RolesUI();
+        //Just one window
+        if (!Arrays.asList(frames).toString().contains("RolesUI")) {
+            mainPanel.add(rView);
+            mainPanel.validate();
+            rView.moveToFront();
+        }
+    }//GEN-LAST:event_mRolesActionPerformed
+
+    private void mTypesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mTypesActionPerformed
+        final JInternalFrame[] frames = mainPanel.getAllFrames();
+        TypesUI tView = new TypesUI();
+        //Just one window
+        if (!Arrays.asList(frames).toString().contains("TypesUI")) {
+            mainPanel.add(tView);
+            mainPanel.validate();
+            tView.moveToFront();
+        }
+    }//GEN-LAST:event_mTypesActionPerformed
+
+    private void mActionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mActionsActionPerformed
+        final JInternalFrame[] frames = mainPanel.getAllFrames();
+        ActionsUI aView = new ActionsUI();
+        //Just one window
+        if (!Arrays.asList(frames).toString().contains("ActionsUI")) {
+            mainPanel.add(aView);
+            mainPanel.validate();
+            aView.moveToFront();
+        }
+    }//GEN-LAST:event_mActionsActionPerformed
+
+    private void mResourcesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mResourcesActionPerformed
+        final JInternalFrame[] frames = mainPanel.getAllFrames();
+        ResourcesUI rView = new ResourcesUI();
+        //Just one window
+        if (!Arrays.asList(frames).toString().contains("ResourcesUI")) {
+            mainPanel.add(rView);
+            mainPanel.validate();
+            rView.moveToFront();
+        }
+    }//GEN-LAST:event_mResourcesActionPerformed
 
     public void setInfoText(String s) {
         this.lInfo.setText(s);
@@ -182,6 +246,7 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem mInfo;
     private javax.swing.JMenuItem mResources;
     private javax.swing.JMenuItem mRoles;
+    private javax.swing.JMenuItem mTypes;
     private javax.swing.JMenuItem mUsers;
     private javax.swing.JDesktopPane mainPanel;
     private javax.swing.JPanel pInfo;

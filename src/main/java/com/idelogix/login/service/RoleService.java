@@ -5,9 +5,17 @@
  */
 package com.idelogix.login.service;
 
+import com.idelogix.login.dao.ResourceDAO;
 import com.idelogix.login.dao.RoleDAO;
+import com.idelogix.login.dao.UserDAO;
+import com.idelogix.login.model.GenericEntity;
 import com.idelogix.login.model.Role;
+import com.idelogix.login.model.RoleResourceAction;
+import com.idelogix.login.model.User;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -32,6 +40,33 @@ public class RoleService {
         return (Role) roleDao.getById(roleId);
     }
 
+    public Role getRoleComplete(int roleId) {
+        Role r = (Role) roleDao.getById(roleId);
+        if (r != null) {
+            r = RoleDAO.getInstance().loadRoleUsers(r);
+            r = RoleDAO.getInstance().loadResourcesAndActions(r);
+        }
+        return r;
+    }
+
+    public RolesTableModel getRolesTableModel() {
+        return (new RolesTableModel(getAllComplete()));
+    }
+
+    public List<Role> getAllComplete() {
+        //Gets all roles including users and resources lists.
+        ArrayList<Role> roleList = new ArrayList<>();
+        for (Object o : getAll()) {
+            Role r = (Role) o;
+            r = RoleDAO.getInstance().loadRoleUsers(r);
+            r = RoleDAO.getInstance().loadResourcesAndActions(r);
+            if (r != null) {
+                roleList.add(r);
+            }
+        }
+        return roleList;
+    }
+
     public Role getRole(String roleName) {
         return (Role) roleDao.getByName(roleName);
     }
@@ -40,12 +75,29 @@ public class RoleService {
         return roleDao.delete(roleId);
     }
 
-    public boolean updateRole(Role u) {
-        return roleDao.update(u);
+    public boolean updateRole(Role r) {
+        return roleDao.update(r);
     }
 
-    public boolean addRole(Role u) {
-        return roleDao.add(u);
+    public boolean updateRole(Integer uId, String name, String comments, boolean enabled, Date dateCreated, ArrayList users) {
+        Role r = new Role(uId, name, comments, enabled, dateCreated);
+        if (updateRole(r)) {
+            saveUsers(r.getId(), users);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean saveUsers(int roleId, ArrayList users) {
+        //First dele all current roles
+        roleDao.deleteAllRoleUsers(roleId);
+        //Then update new roles
+        return roleDao.updateRoleUsers(roleId, users);
+    }
+
+    public boolean addRole(Role r) {
+        return roleDao.add(r);
     }
 
     public ArrayList getAll() {
@@ -57,8 +109,125 @@ public class RoleService {
     }
 
     public ArrayList getAll(int limit, int offset, String searchString) {
-        ArrayList uList = roleDao.getAll(limit, offset, searchString);
-        return uList;
+        ArrayList rList = roleDao.getAll(limit, offset, searchString);
+        return rList;
     }
-    
+
+    public int getStringFieldMaxSize(String entityName, String fieldName) {
+        return roleDao.getStringFieldMaxSize(entityName, fieldName);
+    }
+
+    public DefaultTableModel getDefaultTableModel(String searchText) {
+        DefaultTableModel tModel = new DefaultTableModel();
+        tModel.addColumn(Props.getInstance().getTxtProps("label._Id"));           //0
+        tModel.addColumn(Props.getInstance().getTxtProps("label._Name"));    //1
+        tModel.addColumn(Props.getInstance().getTxtProps("label._Comments"));     //2
+        tModel.addColumn(Props.getInstance().getTxtProps("label._Enabled"));      //3
+        tModel.addColumn(Props.getInstance().getTxtProps("label._Date_created")); //4
+        Object rowData[] = new Object[5];
+        ArrayList<Role> myData = getAll(searchText);
+        for (int i = 0; i < myData.size(); i++) {
+            rowData[0] = myData.get(i).getId();
+            rowData[1] = myData.get(i).getName();
+            rowData[2] = myData.get(i).getComments();
+            rowData[3] = myData.get(i).getEnabled();
+            rowData[4] = myData.get(i).getDateCreated(); //Assumed date is returned in format: "yyyy-MM-dd"
+            tModel.addRow(rowData);
+        }
+        return tModel;
+    }
+
+    public String[][] getRoleResourcesActionsName2DArray(String roleName) {
+        return getRoleResourcesActionsName2DArray(getRole(roleName).getId());
+    }
+
+    public String[][] getRoleResourcesActionsName2DArray(int roleId) {
+        Role r = getRole(roleId);
+        if (r == null) {
+            return new String[0][0];
+        }
+        r = roleDao.loadResourcesAndActions(r);
+        ArrayList<RoleResourceAction> rraList = r.getRoleResourceActionArrayList();
+        String arr[][] = new String[rraList.size()][2];
+        for (int i = 0; i < rraList.size(); i++) {
+            arr[i][0] = rraList.get(i).getResource().getName();
+            arr[i][1] = rraList.get(i).getAction().getName();
+        }
+        return arr;
+    }
+
+    public boolean saveRoleResourcesActions(int roleId, String[][] resourcesActions) {
+        boolean success = true;
+        for (String[] ra : resourcesActions) {
+            Utils.print(ra[0] + " - " + ra[1]);
+            if (!ResourceDAO.getInstance().addRoleResourceAction(roleId, ra[0], ra[1])) {
+                success = false;
+            }
+        }
+        Utils.print(">>" + success);
+        return success;
+    }
+
+    public boolean deleteAllRoleResources(String roleName) {
+        return deleteAllRoleResources(this.getRole(roleName).getId());
+    }
+
+    public boolean deleteAllRoleResources(int roleId) {
+        return RoleDAO.getInstance().deleteAllRoleResources(roleId);
+    }
+
+    public String[] getRoleUsersNameList(String roleName) {
+        return getRoleUsersNameList(getRole(roleName).getId());
+    }
+
+    public String[] getRoleUsersNameList(int roleId) {
+        Role r = getRole(roleId);
+        if (r == null) {
+            return new String[0];
+        }
+        r = roleDao.loadRoleUsers(r);
+        ArrayList<User> userRolesList = r.getUserArrayList();
+        String arr[] = new String[userRolesList.size()];
+        for (int i = 0; i < userRolesList.size(); i++) {
+            arr[i] = userRolesList.get(i).getName();
+        }
+        return arr;
+    }
+
+    public String[] getRoleNotUserNamesList(int roleId) {
+        ArrayList<GenericEntity> allUserList = UserDAO.getInstance().getAll(); //Get list of all users
+        Role r = getRole(roleId);
+        if (r != null) {
+            r = roleDao.loadRoleUsers(r); //Get users belonging to the role
+            ArrayList<User> userRolesList = r.getUserArrayList();
+            for (int i = 0; i < userRolesList.size(); i++) {
+                int index = -1;
+                for (int j = 0; j < allUserList.size(); j++) {
+                    if (userRolesList.get(i).getName().equals(allUserList.get(j).getName())) {
+                        index = j;
+                    }
+                }
+                if (index >= 0) {
+                    allUserList.remove(index);
+                }
+            }
+        }
+        String arr[] = new String[allUserList.size()];
+        for (int i = 0; i < allUserList.size(); i++) {
+            arr[i] = allUserList.get(i).getName();
+        }
+        return arr;
+    }
+
+    public boolean createRole(Integer id, String name, String comments, Boolean enabled, Date dateCreated, ArrayList users) {
+        Role r = new Role(id, name, comments, enabled, dateCreated);
+        if (addRole(r)) {
+            r = getRole(r.getName()); // We get autogenerate ID
+            saveUsers(r.getId(), users);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

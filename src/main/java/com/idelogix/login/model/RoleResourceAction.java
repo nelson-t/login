@@ -5,15 +5,13 @@
  */
 package com.idelogix.login.model;
 
-import java.io.Serializable;
 
 /**
  *
  * @author Administrator
  */
-public class RoleResourceAction implements Serializable {
+public class RoleResourceAction {
 
-    private static final long serialVersionUID = 1L;
     protected RoleResourceActionPK roleResourceActionPK;
     private Action action;
     private Resource resource;
@@ -60,13 +58,6 @@ public class RoleResourceAction implements Serializable {
 
     public void setRole(Role role) {
         this.role = role;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (roleResourceActionPK != null ? roleResourceActionPK.hashCode() : 0);
-        return hash;
     }
 
     @Override
