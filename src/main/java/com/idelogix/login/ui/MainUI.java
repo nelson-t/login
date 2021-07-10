@@ -143,6 +143,11 @@ public class MainUI extends javax.swing.JFrame {
         mHelp.setText("_Help");
 
         mInfo.setText("_Info");
+        mInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mInfoActionPerformed(evt);
+            }
+        });
         mHelp.add(mInfo);
 
         jMenuBar1.add(mHelp);
@@ -175,60 +180,51 @@ public class MainUI extends javax.swing.JFrame {
     }//GEN-LAST:event_mExitActionPerformed
 
     private void mUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mUsersActionPerformed
-        final JInternalFrame[] frames = mainPanel.getAllFrames();
         UsersUI uView = new UsersUI();
-        //Just one window
-        if (!Arrays.asList(frames).toString().contains("UsersUI")) {
-            mainPanel.add(uView);
-            mainPanel.validate();
-            uView.moveToFront();
-        }
+        validateNewUI(uView);
+
     }//GEN-LAST:event_mUsersActionPerformed
 
     private void mRolesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mRolesActionPerformed
-        final JInternalFrame[] frames = mainPanel.getAllFrames();
         RolesUI rView = new RolesUI();
-        //Just one window
-        if (!Arrays.asList(frames).toString().contains("RolesUI")) {
-            mainPanel.add(rView);
-            mainPanel.validate();
-            rView.moveToFront();
-        }
+        validateNewUI(rView);
+
     }//GEN-LAST:event_mRolesActionPerformed
 
     private void mTypesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mTypesActionPerformed
-        final JInternalFrame[] frames = mainPanel.getAllFrames();
         TypesUI tView = new TypesUI();
-        //Just one window
-        if (!Arrays.asList(frames).toString().contains("TypesUI")) {
-            mainPanel.add(tView);
-            mainPanel.validate();
-            tView.moveToFront();
-        }
+        validateNewUI(tView);
     }//GEN-LAST:event_mTypesActionPerformed
 
     private void mActionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mActionsActionPerformed
-        final JInternalFrame[] frames = mainPanel.getAllFrames();
         ActionsUI aView = new ActionsUI();
-        //Just one window
-        if (!Arrays.asList(frames).toString().contains("ActionsUI")) {
-            mainPanel.add(aView);
-            mainPanel.validate();
-            aView.moveToFront();
-        }
+        validateNewUI(aView);
     }//GEN-LAST:event_mActionsActionPerformed
 
     private void mResourcesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mResourcesActionPerformed
-        final JInternalFrame[] frames = mainPanel.getAllFrames();
         ResourcesUI rView = new ResourcesUI();
-        //Just one window
-        if (!Arrays.asList(frames).toString().contains("ResourcesUI")) {
-            mainPanel.add(rView);
-            mainPanel.validate();
-            rView.moveToFront();
-        }
+        validateNewUI(rView);
     }//GEN-LAST:event_mResourcesActionPerformed
 
+    private void mInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mInfoActionPerformed
+        InfoUI iView = new InfoUI();
+        validateNewUI(iView);
+    }//GEN-LAST:event_mInfoActionPerformed
+
+    public void validateNewUI(JInternalFrame newUI){
+        //Check if user has access right
+        if (UIUtils.isAccessAllowed(newUI)) {
+            final JInternalFrame[] frames = mainPanel.getAllFrames();
+            //Makes sure just one window of its type open.
+            if (!Arrays.asList(frames).toString().contains(newUI.getClass().getSimpleName())) {
+                mainPanel.add(newUI);
+                UIUtils.getLocalText(newUI);      ///Get text for labels/fields 
+                mainPanel.validate();
+                newUI.moveToFront();
+            }
+        }
+    }
+    
     public void setInfoText(String s) {
         this.lInfo.setText(s);
     }

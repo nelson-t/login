@@ -5,6 +5,8 @@
  */
 package com.idelogix.login.ui;
 
+import com.idelogix.login.dao.RoleResourceActionDAO;
+import com.idelogix.login.model.RoleResourceAction;
 import com.idelogix.login.service.Globals;
 import com.idelogix.login.service.Props;
 import com.idelogix.login.service.ResourceService;
@@ -18,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.ListModel;
@@ -73,46 +76,104 @@ public class UIUtils {
         return Props.getInstance().getTxtProps(tag);
     }
 
+    static void enableActionButtons(JInternalFrame frame) {
+        //Get all logged role's resources & actions
+        ArrayList<RoleResourceAction> rra = RoleResourceActionDAO.getInstance().getResourcesRoleActions(Globals.getLoggedUserRoleId());
+        //Verify that each JButton and related action is included in Role's rights.
+        for (Component c : getAllComponents(frame)) {
+            if (c.getClass().getTypeName().equals("javax.swing.JButton")) {
+                String bText = ((JButton) c).getText();
+                for (RoleResourceAction r : rra) {
+                    if (r.getResource().getName().equals(frame.getClass().getSimpleName()) && r.getAction().getButtonText().equals(bText)) {
+                        ((JButton) c).setEnabled(true);
+                    }
+                }
+            }
+        }
+    }
+
+    static void checkAccessRights(JInternalFrame frame) {
+        for (Component c : getAllComponents(frame)) {
+            if (c.getClass().getTypeName().equals("javax.swing.JButton")) {
+                if (((JButton) c).getText().equals("_Edit")) {
+                    if (!isResourceActionAllowed(frame, Globals.EDIT_ACTION)) {
+                        ((JButton) c).setVisible(false);
+                    }
+                }
+                if (((JButton) c).getText().equals("_Create")) {
+                    if (!isResourceActionAllowed(frame, Globals.CREATE_ACTION)) {
+                        ((JButton) c).setVisible(false);
+                    }
+                }
+                if (((JButton) c).getText().equals("_Delete")) {
+                    if (!isResourceActionAllowed(frame, Globals.DELETE_ACTION)) {
+                        ((JButton) c).setVisible(false);
+                    }
+                }
+            }
+        }
+    }
+
     static boolean isResourceActionAllowed(JInternalFrame jf, String actionName) {
         return ResourceService.getInstance().isActionAllowed(jf.getClass().getSimpleName(), actionName, Globals.getLoggedUserRoleName());
     }
 
+    static boolean isAccessAllowed(JInternalFrame jf) {
+        if (!ResourceService.getInstance().isAccessAllowed(jf.getClass().getSimpleName(), Globals.getLoggedUserRoleName())) {
+            JOptionPane.showMessageDialog(javax.swing.FocusManager.getCurrentManager().getActiveWindow(), getLocalText("msg._You_are_not_authorized!"));
+            jf.dispose();
+            return false;
+        }
+        return true;
+    }
+
+    static void getLocalText(Container jf) {
+        if (jf.getClass().getSuperclass().getName().equals("javax.swing.JInternalFrame")) {
+            String title = UIUtils.getLocalText("title." + ((javax.swing.JInternalFrame) jf).getTitle());
+            ((JInternalFrame) jf).setTitle(title);
+        }
+        for (Component c : getAllComponents(jf)) {
+            //System.out.println("==>" + c.getClass().getTypeName());
+            if (c.getClass().getTypeName().equals("javax.swing.JLabel") && ((JLabel) c).getText().startsWith("_")) {
+                ((JLabel) c).setText(UIUtils.getLocalText("label." + ((JLabel) c).getText()));
+            }
+            if (c.getClass().getTypeName().equals("javax.swing.JButton") && ((JButton) c).getText().startsWith("_")) {
+                ((JButton) c).setText(UIUtils.getLocalText("button." + ((JButton) c).getText()));
+            }
+            if (c.getClass().getTypeName().equals("javax.swing.JMenu") && ((JMenu) c).getText().startsWith("_")) {
+                ((JMenu) c).setText(UIUtils.getLocalText("menu." + ((JMenu) c).getText()));
+            }
+            if (c.getClass().getTypeName().equals("javax.swing.JMenuItem") && ((JMenuItem) c).getText().startsWith("_")) {
+                ((JMenuItem) c).setText(UIUtils.getLocalText("menu." + ((JMenuItem) c).getText()));
+            }
+            if (c.getClass().getTypeName().equals("javax.swing.JTabbedPane")) {
+                for (int i = 0; i < ((JTabbedPane) c).getTabCount(); i++) {
+                    if (((JTabbedPane) c).getTitleAt(i).startsWith("_")) {
+                        ((JTabbedPane) c).setTitleAt(i, UIUtils.getLocalText("tab." + ((JTabbedPane) c).getTitleAt(i)));
+                    }
+                }
+            }
+        }
+    }
+
     static List<Component> getAllComponents(final Container c) {
+        //Recursive
         Component[] comps = c.getComponents();
         List<Component> compList = new ArrayList<>();
         for (Component comp : comps) {
             compList.add(comp);
-            System.out.println("==>" + comp.getClass().getTypeName());
-            if (comp instanceof Container ) {
+            //System.out.println("==>" + comp.getClass().getTypeName());
+            if (comp instanceof Container) {
                 compList.addAll(getAllComponents((Container) comp));
             }
             if (comp instanceof JMenu) {
                 Component[] menuItems = ((JMenu) comp).getMenuComponents();
-                for(Component compMenu : menuItems)
+                for (Component compMenu : menuItems) {
                     compList.add(compMenu);
-            }            
+                }
+            }
         }
         return compList;
     }
 
-    static void getLocalText(Container jf) {
-        for (Component c : getAllComponents(jf)) {
-            System.out.println("==>" + c.getClass().getTypeName());
-            if (c.getClass().getTypeName().equals("javax.swing.JLabel") && ((JLabel) c).getText().startsWith("_"))
-                ((JLabel) c).setText(UIUtils.getLocalText("label." + ((JLabel) c).getText()));
-            if (c.getClass().getTypeName().equals("javax.swing.JButton") && ((JButton) c).getText().startsWith("_")) 
-                ((JButton) c).setText(UIUtils.getLocalText("button." + ((JButton) c).getText()));
-            if (c.getClass().getTypeName().equals("javax.swing.JMenu") && ((JMenu) c).getText().startsWith("_")) 
-                ((JMenu) c).setText(UIUtils.getLocalText("menu." + ((JMenu) c).getText()));
-            if (c.getClass().getTypeName().equals("javax.swing.JMenuItem") && ((JMenuItem) c).getText().startsWith("_")) 
-                ((JMenuItem) c).setText(UIUtils.getLocalText("menu." + ((JMenuItem) c).getText()));
-            if (c.getClass().getTypeName().equals("javax.swing.JTabbedPane")){
-                for(int i=0; i< ((JTabbedPane)c).getTabCount();i++){
-                    if(((JTabbedPane)c).getTitleAt(i).startsWith("_")){
-                        ((JTabbedPane)c).setTitleAt(i, UIUtils.getLocalText("tab." + ((JTabbedPane)c).getTitleAt(i)));
-                    }
-                }
-            } 
-        }
-    }
 }

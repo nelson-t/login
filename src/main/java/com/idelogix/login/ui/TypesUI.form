@@ -186,6 +186,7 @@
         <Component class="javax.swing.JButton" name="bDelete">
           <Properties>
             <Property name="text" type="java.lang.String" value="_Delete"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bDeleteActionPerformed"/>
@@ -194,6 +195,7 @@
         <Component class="javax.swing.JButton" name="bCreate">
           <Properties>
             <Property name="text" type="java.lang.String" value="_Create"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bCreateActionPerformed"/>
@@ -202,6 +204,7 @@
         <Component class="javax.swing.JButton" name="bEdit">
           <Properties>
             <Property name="text" type="java.lang.String" value="_Edit"/>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bEditActionPerformed"/>

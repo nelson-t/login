@@ -32,7 +32,6 @@ public class ActionService {
     public Action getAction(String actionName) {
         return (Action) actionDao.getByName(actionName);
     }
-
   
     public ArrayList getAll() {
         return getAll(0, 0, null);
@@ -60,8 +59,8 @@ public class ActionService {
         return actionDao.getStringFieldMaxSize(entityName, fieldName);
     }
     
-    public boolean addAction(String name, String comments, Boolean enabled) {
-        Action t = new Action(null, name, comments, enabled, null);
+    public boolean addAction(String name, String comments, boolean enabled, boolean allowAccess, String buttonText) {
+        Action t = new Action(null, name, comments, enabled, null, allowAccess, buttonText);
         return addAction(t);
     }    
 
@@ -69,18 +68,18 @@ public class ActionService {
         return actionDao.add(t);
     }
   
-      public boolean deleteAction(int actionId) {
+    public boolean deleteAction(int actionId) {
         return actionDao.delete(actionId);
     }
+
+    public boolean updateAction(Integer id, String name, String comments, boolean enabled, boolean allowAccess, String buttonText) {
+        Action t = new Action(id, name, comments, enabled, null, allowAccess, buttonText);
+        return updateAction(t);
+    }   
 
     public boolean updateAction(Action t) {
         return actionDao.update(t);
     }
-
-    public boolean updateAction(Integer id, String name, String comments, boolean enabled) {
-        Action t = new Action(id, name, comments, enabled, null);
-        return updateAction(t);
-    }   
     
     public DefaultTableModel getTableModel(String searchText) {
         DefaultTableModel tModel = new DefaultTableModel();
@@ -89,7 +88,10 @@ public class ActionService {
         tModel.addColumn(Props.getInstance().getTxtProps("label._Comments"));     //2
         tModel.addColumn(Props.getInstance().getTxtProps("label._Enabled"));      //3
         tModel.addColumn(Props.getInstance().getTxtProps("label._Date_created")); //4
-        Object rowData[] = new Object[5];
+        tModel.addColumn(Props.getInstance().getTxtProps("label._Allow_Access"));      //5
+        tModel.addColumn(Props.getInstance().getTxtProps("label._Button_text"));     //6
+        
+        Object rowData[] = new Object[7];
         ArrayList<Action> myData = getAll(searchText);
         for (int i = 0; i < myData.size(); i++) {
             rowData[0] = myData.get(i).getId();
@@ -97,9 +99,10 @@ public class ActionService {
             rowData[2] = myData.get(i).getComments();
             rowData[3] = myData.get(i).getEnabled();
             rowData[4] = myData.get(i).getDateCreated(); //Assumed date is returned in format: "yyyy-MM-dd"
+            rowData[5] = myData.get(i).getAllowAccess();            
+            rowData[6] = myData.get(i).getButtonText();            
             tModel.addRow(rowData);
         }
         return tModel;
     } 
-    
 }

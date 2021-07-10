@@ -21,7 +21,7 @@ import org.apache.logging.log4j.Logger;
 public class Utils {
 
     public static Logger log = LogManager.getLogger(Utils.class);
-
+    
     public static boolean isPwdValid(String str) {
         //Here add more contraints
         int ml = Integer.parseInt(Props.getInstance().getAppProps("app.pwdMin"));

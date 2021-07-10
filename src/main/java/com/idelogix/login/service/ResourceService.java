@@ -8,10 +8,12 @@ package com.idelogix.login.service;
 import com.idelogix.login.dao.ActionDAO;
 import com.idelogix.login.dao.ResourceDAO;
 import com.idelogix.login.dao.RoleDAO;
+import com.idelogix.login.dao.RoleResourceActionDAO;
 import com.idelogix.login.model.Action;
 import com.idelogix.login.model.GenericEntity;
 import com.idelogix.login.model.Resource;
 import com.idelogix.login.model.Role;
+import com.idelogix.login.model.RoleResourceAction;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -63,7 +65,7 @@ public class ResourceService {
             return false;
         }
     }
-    
+
     public boolean deleteResource(int resourceId) {
         return resourceDao.delete(resourceId);
     }
@@ -126,6 +128,21 @@ public class ResourceService {
         return resourceDao.isActionAllowed(resourceId, actionId, roleId);
     }
 
+    public boolean isAccessAllowed(String resourceName, String roleName) {
+        //At least one action with access_allowed = true
+        Resource re = (Resource) resourceDao.getByName(resourceName);
+        Role ro = RoleService.getInstance().getRole(roleName);
+        ArrayList<RoleResourceAction> rras = RoleResourceActionDAO.getInstance().getResourcesRoleActions(ro.getId());
+        boolean allowAccess = false;
+        for (RoleResourceAction r : rras) {
+            if (r.getResource().getId().equals(re.getId()) && r.getAction().getAllowAccess()) {
+                allowAccess = true;
+               
+            }
+        }
+        return allowAccess;
+    }
+
     public int getStringFieldMaxSize(String entityName, String fieldName) {
         return resourceDao.getStringFieldMaxSize(entityName, fieldName);
     }
@@ -157,7 +174,7 @@ public class ResourceService {
         }
         return tModel;
     }
-    
+
     public String[] getResourceActionList(int resourceId) {
         Resource r = getResource(resourceId);
         ArrayList<Action> resourceActionList = r.getActionArrayList();
@@ -179,5 +196,5 @@ public class ResourceService {
         }
         return arr;
     }
-    
+
 }

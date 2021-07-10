@@ -39,7 +39,7 @@ public class RoleResourceActionDAO {
         return conn;
     }
     
-    ArrayList<RoleResourceAction> getResourcesRoleActions(int roleId)
+    public ArrayList<RoleResourceAction> getResourcesRoleActions(int roleId)
     {
         Connection connection = null;
         PreparedStatement ptmt = null;

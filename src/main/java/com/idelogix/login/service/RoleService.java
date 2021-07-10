@@ -159,12 +159,10 @@ public class RoleService {
     public boolean saveRoleResourcesActions(int roleId, String[][] resourcesActions) {
         boolean success = true;
         for (String[] ra : resourcesActions) {
-            Utils.print(ra[0] + " - " + ra[1]);
             if (!ResourceDAO.getInstance().addRoleResourceAction(roleId, ra[0], ra[1])) {
                 success = false;
             }
         }
-        Utils.print(">>" + success);
         return success;
     }
 

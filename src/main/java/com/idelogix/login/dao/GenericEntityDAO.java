@@ -187,7 +187,6 @@ abstract class GenericEntityDAO implements IGenericEntityDAO<GenericEntity> {
                     ptmt.setInt(2, offset);
                 }
             }
-            Utils.print(ptmt.toString());
             resultSet = ptmt.executeQuery();
 
             rsmd = resultSet.getMetaData();

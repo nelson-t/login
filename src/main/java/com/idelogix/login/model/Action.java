@@ -14,11 +14,16 @@ import java.util.Date;
  */
 public class Action extends GenericEntity {
 
+    private Boolean allowAccess;
+    private String buttonText;
+    
     private ArrayList<Resource> resourceArrayList;
     private ArrayList<RoleResourceAction> roleResourceActionArrayList;
 
-    public Action(Integer id, String name, String comments, Boolean enabled, Date dateCreated) {
+    public Action(Integer id, String name, String comments, boolean enabled, Date dateCreated, boolean allowAccess, String buttonText ) {
         super(id, name, comments, enabled, dateCreated);
+        this.allowAccess=allowAccess;
+        this.buttonText=buttonText;
     }
 
     public ArrayList<Resource> getResourceArrayList() {
@@ -35,6 +40,22 @@ public class Action extends GenericEntity {
 
     public void setRoleResourceActionArrayList(ArrayList<RoleResourceAction> roleResourceActionArrayList) {
         this.roleResourceActionArrayList = roleResourceActionArrayList;
+    }
+
+    public Boolean getAllowAccess() {
+        return allowAccess;
+    }
+
+    public void setAllowAccess(boolean allowAccess) {
+        this.allowAccess = allowAccess;
+    }
+
+    public String getButtonText() {
+        return buttonText;
+    }
+
+    public void setButtonText(String buttonText) {
+        this.buttonText = buttonText;
     }
 
 }
