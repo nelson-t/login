@@ -5,7 +5,7 @@
  */
 package com.idelogix.login.ui;
 
-import com.idelogix.login.service.Props;
+import com.idelogix.login.service.Globals;
 import com.idelogix.login.service.ResourceService;
 import com.idelogix.login.service.Utils;
 import com.idelogix.login.service.TypeService;
@@ -475,7 +475,6 @@ public class TypesUI extends javax.swing.JInternalFrame {
 
     private final TypeService typeService = TypeService.getInstance();
 
-    private final String dateFormat = Props.getInstance().getAppProps("app.dateFormat");
     private final int MAX_TYPE_NAME = typeService.getStringFieldMaxSize("type", "name");
     private final int MAX_TYPE_COMMENTS = typeService.getStringFieldMaxSize("type", "comments");
    
@@ -498,7 +497,7 @@ public class TypesUI extends javax.swing.JInternalFrame {
     private void clearValues() {
         tId.setText("0");
         tName.setText("");
-        SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
+        SimpleDateFormat formatter = new SimpleDateFormat(Globals.DATE_FORMAT);
         tDateCreated.setText(formatter.format(new Date()));
         tComments.setText("");
         cbEnabled.setSelected(false);
@@ -506,6 +505,7 @@ public class TypesUI extends javax.swing.JInternalFrame {
     }
 
     private void setTableConfiguration() {
+        tblMain.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);        
         //Avoid editing
         tblMain.setDefaultEditor(Object.class, null);
         //Show only first 3 rows (0,1,2), hide the rest
@@ -587,7 +587,7 @@ public class TypesUI extends javax.swing.JInternalFrame {
             Logger.getLogger(TypesUI.class.getName()).log(Level.SEVERE, null, ex);
         }
         //Convert to app's default date format and display
-        SimpleDateFormat DateFor = new SimpleDateFormat(Props.getInstance().getAppProps("app.dateFormat"));
+        SimpleDateFormat DateFor = new SimpleDateFormat(Globals.DATE_FORMAT);
         String stringDate = DateFor.format(d);
         tDateCreated.setText(stringDate);
         //Get array of users names with that role and update list in corresponding tab

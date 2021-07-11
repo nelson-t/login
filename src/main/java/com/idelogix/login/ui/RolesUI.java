@@ -8,7 +8,7 @@ package com.idelogix.login.ui;
 
 import com.idelogix.login.model.Action;
 import com.idelogix.login.model.Resource;
-import com.idelogix.login.service.Props;
+import com.idelogix.login.service.Globals;
 import com.idelogix.login.service.ResourceService;
 import com.idelogix.login.service.Utils;
 import com.idelogix.login.service.RoleService;
@@ -16,7 +16,6 @@ import com.idelogix.login.service.RoleService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -432,6 +431,7 @@ public class RolesUI extends javax.swing.JInternalFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        listRightActions.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         listRightActions.setEnabled(false);
         listRightActions.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -445,6 +445,7 @@ public class RolesUI extends javax.swing.JInternalFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        listLeftActions.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         listLeftActions.setEnabled(false);
         listLeftActions.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -900,7 +901,6 @@ public class RolesUI extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
 
     private final RoleService roleService = RoleService.getInstance();
-    private final String dateFormat = Props.getInstance().getAppProps("app.dateFormat");
     private final int MAX_ROLE_NAME = roleService.getStringFieldMaxSize("role", "name");
     private final int MAX_ROLE_COMMENTS = roleService.getStringFieldMaxSize("role", "comments");
     private boolean enabledEdit;
@@ -922,7 +922,7 @@ public class RolesUI extends javax.swing.JInternalFrame {
     private void clearValues() {
         tId.setText("0");
         tName.setText("");
-        SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
+        SimpleDateFormat formatter = new SimpleDateFormat(Globals.DATE_FORMAT);
         tDateCreated.setText(formatter.format(new Date()));
         tComments.setText("");
         cbEnabled.setSelected(false);
@@ -936,6 +936,7 @@ public class RolesUI extends javax.swing.JInternalFrame {
     }
 
     private void setTableConfiguration() {
+        tblMain.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);        
         //Avoid editing
         tblMain.setDefaultEditor(Object.class, null);
         //Show only first 3 rows (0,1,2), hide the rest
@@ -961,7 +962,7 @@ public class RolesUI extends javax.swing.JInternalFrame {
         boolean success = false;
         try {
             success = RoleService.getInstance().createRole(Integer.parseInt(tId.getText()), tName.getText(), tComments.getText(),
-                    cbEnabled.isSelected(), new SimpleDateFormat(dateFormat).parse(tDateCreated.getText()), UIUtils.jListToArrayList(listRightUsers));
+                    cbEnabled.isSelected(), new SimpleDateFormat(Globals.DATE_FORMAT).parse(tDateCreated.getText()), UIUtils.jListToArrayList(listRightUsers));
             if (success) {
                 //Save Role's Resources and Actions
                 int roleId = RoleService.getInstance().getRole(tName.getText()).getId();
@@ -997,7 +998,7 @@ public class RolesUI extends javax.swing.JInternalFrame {
         boolean success = true;
         try {
             success = roleService.updateRole(Integer.parseInt(tId.getText()), tName.getText(), tComments.getText(),
-                    cbEnabled.isSelected(), new SimpleDateFormat(dateFormat).parse(tDateCreated.getText()), UIUtils.jListToArrayList(listRightUsers));
+                    cbEnabled.isSelected(), new SimpleDateFormat(Globals.DATE_FORMAT).parse(tDateCreated.getText()), UIUtils.jListToArrayList(listRightUsers));
             if (success) {
                 //Save Role's Resources and Actions
                 success = RoleService.getInstance().deleteAllRoleResources(Integer.parseInt(tId.getText()));
@@ -1041,7 +1042,7 @@ public class RolesUI extends javax.swing.JInternalFrame {
             Logger.getLogger(RolesUI.class.getName()).log(Level.SEVERE, null, ex);
         }
         //Convert to app's default date format and display
-        SimpleDateFormat DateFor = new SimpleDateFormat(Props.getInstance().getAppProps("app.dateFormat"));
+        SimpleDateFormat DateFor = new SimpleDateFormat(Globals.DATE_FORMAT);
         String stringDate = DateFor.format(d);
         tDateCreated.setText(stringDate);
         setRolesLists();

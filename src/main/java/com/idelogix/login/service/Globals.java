@@ -16,6 +16,7 @@ public class Globals {
     static public final String EDIT_ACTION     = "edit";
     static public final String CREATE_ACTION   = "create";
     static public final String DELETE_ACTION   = "delete";
+    static public final String DATE_FORMAT = Props.getInstance().getAppProps("app.dateFormat");
     
     static int loggedUserId;
     static String loggedUserName;

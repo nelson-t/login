@@ -726,6 +726,7 @@
                             <StringItem index="0" value="Action 3"/>
                           </StringArray>
                         </Property>
+                        <Property name="selectionMode" type="int" value="0"/>
                         <Property name="enabled" type="boolean" value="false"/>
                       </Properties>
                       <Events>
@@ -752,6 +753,7 @@
                             <StringItem index="1" value="Action 2"/>
                           </StringArray>
                         </Property>
+                        <Property name="selectionMode" type="int" value="0"/>
                         <Property name="enabled" type="boolean" value="false"/>
                       </Properties>
                       <Events>

@@ -6,7 +6,6 @@
 package com.idelogix.login.ui;
 
 import com.idelogix.login.service.Globals;
-import com.idelogix.login.service.Props;
 import com.idelogix.login.service.Utils;
 import com.idelogix.login.service.UserService;
 
@@ -586,9 +585,7 @@ public class UsersUI extends javax.swing.JInternalFrame {
 
     private final UserService userService = UserService.getInstance();
     private String oldPassword = null;
-
-    private final String dateFormat = Props.getInstance().getAppProps("app.dateFormat");
-    private final int MAX_USER_NAME = userService.getStringFieldMaxSize("user", "name");
+    private final int MAX_USER_NAME     = userService.getStringFieldMaxSize("user", "name");
     private final int MAX_USER_COMMENTS = userService.getStringFieldMaxSize("user", "comments");
     private final int MAX_USER_PASSWORD = userService.getStringFieldMaxSize("user", "password");
     
@@ -611,7 +608,7 @@ public class UsersUI extends javax.swing.JInternalFrame {
        private void clearValues() {
         tUserid.setText("0");
         tName.setText("");
-        SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
+        SimpleDateFormat formatter = new SimpleDateFormat(Globals.DATE_FORMAT);
         tDateCreated.setText(formatter.format(new Date()));
         tComments.setText("");
         tPassword.setText("");
@@ -621,6 +618,7 @@ public class UsersUI extends javax.swing.JInternalFrame {
     }
 
     private void setTableConfiguration() {
+        tblMain.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         //Avoid editing
         tblMain.setDefaultEditor(Object.class, null);
         //Show only first 3 rows (0,1,2), hide the rest
@@ -709,7 +707,7 @@ public class UsersUI extends javax.swing.JInternalFrame {
             Logger.getLogger(UsersUI.class.getName()).log(Level.SEVERE, null, ex);
         }
         //Convert to app's default date format and display
-        SimpleDateFormat DateFor = new SimpleDateFormat(Props.getInstance().getAppProps("app.dateFormat"));
+        SimpleDateFormat DateFor = new SimpleDateFormat(Globals.DATE_FORMAT);
         String stringDate = DateFor.format(d);
         tDateCreated.setText(stringDate);
         setRolesLists();

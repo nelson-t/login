@@ -6,7 +6,6 @@
 package com.idelogix.login.ui;
 
 import com.idelogix.login.service.Globals;
-import com.idelogix.login.service.Props;
 import com.idelogix.login.service.ResourceService;
 import com.idelogix.login.service.Utils;
 import com.idelogix.login.service.ActionService;
@@ -517,7 +516,6 @@ public class ActionsUI extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
 
     private final ActionService actionService = ActionService.getInstance();
-    private final String dateFormat = Props.getInstance().getAppProps("app.dateFormat");
     private final int MAX_TYPE_NAME = actionService.getStringFieldMaxSize("action", "name");
     private final int MAX_TYPE_COMMENTS = actionService.getStringFieldMaxSize("action", "comments");
     private boolean enabledEdit;
@@ -539,7 +537,7 @@ public class ActionsUI extends javax.swing.JInternalFrame {
     private void clearValues() {
         tId.setText("0");
         tName.setText("");
-        SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
+        SimpleDateFormat formatter = new SimpleDateFormat(Globals.DATE_FORMAT);
         tDateCreated.setText(formatter.format(new Date()));
         tComments.setText("");
         cbEnabled.setSelected(false);
@@ -549,6 +547,7 @@ public class ActionsUI extends javax.swing.JInternalFrame {
     }
 
     private void setTableConfiguration() {
+        tblMain.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         //Avoid editing
         tblMain.setDefaultEditor(Object.class, null);
         //Show only first 3 rows (0,1,2), hide the rest
@@ -598,7 +597,6 @@ public class ActionsUI extends javax.swing.JInternalFrame {
         tblMain.getModel().setValueAt(enabled, row, 3);
         tblMain.getModel().setValueAt(allowAccess, row, 5);
         tblMain.getModel().setValueAt(buttonText, row, 6);
-
     }
 
     private void saveRecord() {
@@ -636,10 +634,10 @@ public class ActionsUI extends javax.swing.JInternalFrame {
             Logger.getLogger(ActionsUI.class.getName()).log(Level.SEVERE, null, ex);
         }
         //Convert to app's default date format and display
-        SimpleDateFormat DateFor = new SimpleDateFormat(Props.getInstance().getAppProps("app.dateFormat"));
+        SimpleDateFormat DateFor = new SimpleDateFormat(Globals.DATE_FORMAT);
         String stringDate = DateFor.format(d);
         tDateCreated.setText(stringDate);
-        setResourcesList();
+        listResources.setListData(ResourceService.getInstance().getResourceNamesByAction(Integer.parseInt(tId.getText())));
     }
 
     private void setEditableFieldsEnabled(boolean sw) {
@@ -649,7 +647,6 @@ public class ActionsUI extends javax.swing.JInternalFrame {
         cbAllowAccess.setEnabled(sw);
         tButtonText.setEnabled(sw);
         tName.requestFocus();
-
     }
 
     private void setAllControlsEnabled(boolean sw) {
@@ -666,10 +663,5 @@ public class ActionsUI extends javax.swing.JInternalFrame {
             bCreate.setEnabled(enabledCreate);
             bEdit.setEnabled(enabledEdit);
         }
-    }
-
-    private void setResourcesList() {
-        //Geat arr of users names with that role
-        listResources.setListData(ResourceService.getInstance().getResourceNamesByAction(Integer.parseInt(tId.getText())));
     }
 }
