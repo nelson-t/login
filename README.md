@@ -1,2 +1,2 @@
 # login
-A complete Java Swing login and authentication application (Users, Roles, Rescources and Actions).
+A complete Java Swing login and authentication application (Users, Roles, Resources and Actions).
