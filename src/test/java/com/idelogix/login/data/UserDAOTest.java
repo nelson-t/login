@@ -22,7 +22,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 
 /**
  *
- * @author Administrator
+ * @author Nelson Terrazas
  */
 //@TestMethodOrder(OrderAnnotation.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -133,6 +133,9 @@ public class UserDAOTest {
         int limit = 2;
         int offset = 0;
         ArrayList<User> result = UserService.getInstance().getAll(limit, offset, null);
+        assertTrue (result.size()>0);
+        System.out.println(result.toString());
+        result = UserService.getInstance().getAll(limit, offset, "nel");
         assertTrue (result.size()>0);
         System.out.println(result.toString());
 
