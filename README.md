@@ -8,10 +8,15 @@ You can use the login.zip file. Uncompress it and run.bat.
 Make sure you have a "login" schema in MySQL. These are the current parameters:
 
 datasource.driverClassName=com.mysql.jdbc.Driver
+
 datasource.connectionUrl=jdbc:mysql://127.0.0.1:3306/
+
 datasource.database=login
+
 datasource.parameters=useSSL=false&noAccessToProcedureBodies=true
+
 datasource.dbUser=user1
+
 datasource.dbPwd=123abc
 
 ![image](https://user-images.githubusercontent.com/19244193/125213578-c0024e80-e280-11eb-9ab5-f83e10926f7c.png)
