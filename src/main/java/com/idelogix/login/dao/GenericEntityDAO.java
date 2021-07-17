@@ -47,7 +47,7 @@ abstract class GenericEntityDAO implements IGenericEntityDAO<GenericEntity> {
     private String queryGetByName = null;
     private String queryGetAll = null;
 
-    Connection getConnection() throws SQLException {
+    Connection getConnection() {
         Connection conn = ConnectionFactory.getInstance().getConnection();
         return conn;
     }
@@ -211,10 +211,7 @@ abstract class GenericEntityDAO implements IGenericEntityDAO<GenericEntity> {
                     ptmt.setInt(2, offset);
                 }
             }
-            Utils.print(ptmt.toString());
-            
             resultSet = ptmt.executeQuery();
-
             rsmd = resultSet.getMetaData();
             int columnCount = rsmd.getColumnCount();
             gel = new ArrayList(columnCount);

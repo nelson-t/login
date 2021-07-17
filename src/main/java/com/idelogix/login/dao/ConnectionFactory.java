@@ -38,6 +38,9 @@ public class ConnectionFactory {
 
     private String driverClassName = Props.getInstance().getAppProps("datasource.driverClassName");
     private String connectionUrl = Props.getInstance().getAppProps("datasource.connectionUrl");
+    private String databaseName = Props.getInstance().getAppProps("datasource.database");
+    private String databaseParameters = Props.getInstance().getAppProps("datasource.parameters");
+    
     private String dbUser = Props.getInstance().getAppProps("datasource.dbUser");
     private String dbPwd = Props.getInstance().getAppProps("datasource.dbPwd");
     private static ConnectionFactory connectionFactory = null;
@@ -54,7 +57,7 @@ public class ConnectionFactory {
     public Connection getConnection() {
         Connection conn = null;
         try {
-            conn = DriverManager.getConnection(connectionUrl, dbUser, dbPwd);
+            conn = DriverManager.getConnection(connectionUrl+databaseName+"?"+databaseParameters, dbUser, dbPwd);
         } catch (SQLException e) {
             Utils.log.error("Error on ConnectionFactory", e);
         }
@@ -67,4 +70,5 @@ public class ConnectionFactory {
         }
         return connectionFactory;
     }
+
 }

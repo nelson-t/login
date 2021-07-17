@@ -22,7 +22,10 @@
  * THE SOFTWARE.
  */
 
+import com.idelogix.login.dao.ConnectionFactory;
+import com.idelogix.login.dao.DBUtils;
 import com.idelogix.login.service.Utils;
+import com.idelogix.login.ui.InitDbUI;
 import com.idelogix.login.ui.LoginUI;
 
 /**
@@ -43,11 +46,16 @@ public class Main {
                 | javax.swing.UnsupportedLookAndFeelException e) {
             Utils.log.error(e);
         }
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            new LoginUI().setVisible(true);
-        });
-
+        if (!DBUtils.isDatabaseConection()) {
+            Utils.print("Error conecting to the database. Check URL and othet database parameter in the app.properties file.");
+        } else if (DBUtils.tableExists(ConnectionFactory.getInstance().getConnection(), "user")) {
+            /* Create and display the form */
+            java.awt.EventQueue.invokeLater(() -> {
+                new LoginUI().setVisible(true);
+            });
+        } else {
+            Utils.print("Tables will be created...");
+            new InitDbUI(null, true).setVisible(true);
+        }
     }
 }

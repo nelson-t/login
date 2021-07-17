@@ -150,13 +150,14 @@ public class ResourceService {
     public boolean isAccessAllowed(String resourceName, String roleName) {
         //At least one action with access_allowed = true
         Resource re = (Resource) resourceDao.getByName(resourceName);
+        if (re==null)
+            return false;
         Role ro = RoleService.getInstance().getRole(roleName);
         ArrayList<RoleResourceAction> rras = RoleResourceActionDAO.getInstance().getResourcesRoleActions(ro.getId());
         boolean allowAccess = false;
         for (RoleResourceAction r : rras) {
             if (r.getResource().getId().equals(re.getId()) && r.getAction().getAllowAccess()) {
                 allowAccess = true;
-               
             }
         }
         return allowAccess;
